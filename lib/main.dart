@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mobile_final/firebase_notification.dart';
 import 'package:mobile_final/provider/global_provider.dart';
 import 'package:mobile_final/screens/home_page.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ import 'l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessage().initNotification();
   runApp(
     ChangeNotifierProvider(
       create: (context) => Global_provider(),
