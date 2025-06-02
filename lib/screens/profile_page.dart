@@ -14,6 +14,23 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final List<String> promos = ["WELCOME10"];
   final List<String> paymentMethods = ["Visa - 1234"];
+  List<Map<String, dynamic>> myComments = [];
+  bool isLoadingComments = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMyComments();
+  }
+
+  Future<void> _loadMyComments() async {
+    final provider = Provider.of<Global_provider>(context, listen: false);
+    final comments = await provider.getMyComments();
+    setState(() {
+      myComments = comments;
+      isLoadingComments = false;
+    });
+  }
 
   void _addPromo() {
     setState(() {
@@ -32,10 +49,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final provider = Provider.of<Global_provider>(context);
     final user = provider.currentUser;
     final t = AppLocalizations.of(context)!;
-
-    if (user == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -75,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        user.username,
+                        user?.username ?? '',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -83,11 +96,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        user.email,
+                        user?.email ?? '',
                         style: const TextStyle(color: Colors.grey),
                       ),
                       Text(
-                        user.phone,
+                        user?.phone ?? '',
                         style: const TextStyle(color: Colors.grey),
                       ),
                     ],
@@ -110,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: Icons.local_shipping,
               title: t.shippingAddresses,
               items: [
-                "${user.address.number} ${user.address.street}, ${user.address.city}",
+                "${user?.address.number} ${user?.address.street}, ${user?.address.city}",
               ],
             ),
             CustomExpandableTile(
@@ -128,9 +141,26 @@ class _ProfilePageState extends State<ProfilePage> {
           ]),
 
           const SizedBox(height: 24),
-          _expansionTile(t.myOrders),
-          _expansionTile(t.myReviews),
-          _expansionTile(t.settings),
+          _expansionTile(t.myOrders, [ListTile(title: Text(t.comingSoon))]),
+          _expansionTile(
+            t.myReviews,
+            isLoadingComments
+                ? [
+                    const Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  ]
+                : myComments.isEmpty
+                ? [ListTile(title: Text("No comments yet"))]
+                : myComments.map((comment) {
+                    return ListTile(
+                      title: Text(comment['comment'] ?? ''),
+                      subtitle: Text("Product ID: ${comment['productId']}"),
+                    );
+                  }).toList(),
+          ),
+          _expansionTile(t.settings, [ListTile(title: Text(t.comingSoon))]),
 
           const SizedBox(height: 32),
 
@@ -142,12 +172,8 @@ class _ProfilePageState extends State<ProfilePage> {
               );
               await provider.logout();
               provider.changeCurrentIdx(0);
-
-              if (!mounted) return;
-              Navigator.of(
-                context,
-              ).pushNamedAndRemoveUntil('/login', (route) => false);
             },
+
             icon: const Icon(Icons.logout),
             label: Text(t.logout),
             style: ElevatedButton.styleFrom(
@@ -186,12 +212,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _expansionTile(String title) {
-    final t = AppLocalizations.of(context)!;
-    return ExpansionTile(
-      title: Text(title),
-      children: [ListTile(title: Text(t.comingSoon))],
-    );
+  Widget _expansionTile(String title, List<Widget> children) {
+    return ExpansionTile(title: Text(title), children: children);
   }
 }
 

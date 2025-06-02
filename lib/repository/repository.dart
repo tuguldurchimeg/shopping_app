@@ -23,7 +23,6 @@ class MyRepository {
     return null;
   }
 
-  // Add a comment to the database
   Future<void> addComment(String productId, String comment) async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
@@ -39,7 +38,6 @@ class MyRepository {
     });
   }
 
-  // Get all comments for a product
   Future<List<Map<String, dynamic>>> getComments(String productId) async {
     final db = FirebaseDatabase.instance.ref();
     final snapshot = await db.child("comments/$productId").get();

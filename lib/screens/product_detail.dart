@@ -155,8 +155,6 @@ class _Product_detailState extends State<Product_detail> {
                 color: Colors.green,
               ),
             ),
-            const Divider(height: 30),
-
             _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : CommentSection(

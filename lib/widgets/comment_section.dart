@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_final/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../provider/global_provider.dart';
 
@@ -67,11 +68,13 @@ class _CommentSectionState extends State<CommentSection> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Divider(height: 30),
-        const Text("Comments", style: TextStyle(fontSize: 20)),
+        Text(t.comments, style: const TextStyle(fontSize: 20)),
         const SizedBox(height: 10),
 
         if (_isLoading)
@@ -94,9 +97,9 @@ class _CommentSectionState extends State<CommentSection> {
         const SizedBox(height: 20),
         TextField(
           controller: _controller,
-          decoration: const InputDecoration(
-            labelText: "Write a comment",
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            labelText: t.writeAComment,
+            border: const OutlineInputBorder(),
           ),
           maxLines: 3,
         ),
@@ -104,7 +107,7 @@ class _CommentSectionState extends State<CommentSection> {
         ElevatedButton.icon(
           onPressed: _submit,
           icon: const Icon(Icons.send, color: Colors.white),
-          label: const Text("Post", style: TextStyle(color: Colors.white)),
+          label: Text(t.post, style: const TextStyle(color: Colors.white)),
           style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
         ),
       ],

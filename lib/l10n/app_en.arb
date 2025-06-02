@@ -23,5 +23,10 @@
   "productPrice": "Product Price",
   "totalCost": "Total Cost",
   "favorites": "Favorites",
-  "noFavorites": "No favorite items"
+  "noFavorites": "No favorite items",
+  "shopping": "Shopping",
+  "comments": "Comments",
+  "writeAComment": "Write a comment",
+  "post": "Post",
+  "pleaseLogInToFavorite": "Please log in to favorite items"
 }

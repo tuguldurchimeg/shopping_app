@@ -79,4 +79,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noFavorites => 'No favorite items';
+
+  @override
+  String get shopping => 'Shopping';
+
+  @override
+  String get comments => 'Comments';
+
+  @override
+  String get writeAComment => 'Write a comment';
+
+  @override
+  String get post => 'Post';
+
+  @override
+  String get pleaseLogInToFavorite => 'Please log in to favorite items';
 }

@@ -79,4 +79,19 @@ class AppLocalizationsMn extends AppLocalizations {
 
   @override
   String get noFavorites => 'Хадгалсан бараа алга байна';
+
+  @override
+  String get shopping => 'Дэлгүүр';
+
+  @override
+  String get comments => 'Сэтгэгдлүүд';
+
+  @override
+  String get writeAComment => 'Сэтгэгдэл бичих';
+
+  @override
+  String get post => 'Бичих';
+
+  @override
+  String get pleaseLogInToFavorite => 'Та хадгалахын тулд нэвтэрнэ үү';
 }

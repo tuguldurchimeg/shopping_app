@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mobile_final/repository/repository.dart';
 import '../models/product_model.dart';
 import '../models/user.dart';
 
+// ignore: camel_case_types
 class Global_provider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final DatabaseReference _db = FirebaseDatabase.instance.ref();
-  final _storage = const FlutterSecureStorage();
+  // final _storage = const FlutterSecureStorage();
+  Global_provider() {
+    _initAuthListener();
+  }
 
   List<ProductModel> products = [];
   List<ProductModel> cartItems = [];
@@ -44,9 +47,25 @@ class Global_provider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void _initAuthListener() {
+    _auth.authStateChanges().listen((firebaseUser) async {
+      if (firebaseUser != null) {
+        final profile = await getUser(firebaseUser.uid);
+        if (profile != null) {
+          _currentUser = profile;
+          await loadCartFromFirebase();
+        }
+      } else {
+        _currentUser = null;
+        cartItems.clear();
+      }
+      notifyListeners();
+    });
+  }
+
   Future<void> logout() async {
     await _auth.signOut();
-    await _storage.delete(key: 'token');
+    // await _storage.delete(key: 'token');
     _currentUser = null;
     cartItems.clear();
     notifyListeners();
@@ -198,5 +217,32 @@ class Global_provider extends ChangeNotifier {
       return UserModel.fromJson(data);
     }
     return null;
+  }
+
+  Future<List<Map<String, dynamic>>> getMyComments() async {
+    final user = _auth.currentUser;
+    if (user == null) return [];
+
+    final snapshot = await _db.child("comments").get();
+    if (!snapshot.exists || snapshot.value == null) return [];
+
+    final List<Map<String, dynamic>> result = [];
+
+    final data = snapshot.value as Map<dynamic, dynamic>;
+    data.forEach((productId, comments) {
+      if (comments is Map) {
+        comments.forEach((key, value) {
+          if (value is Map && value['userId'] == user.uid) {
+            result.add({
+              'productId': productId.toString(),
+              'comment': value['comment'],
+              'timestamp': value['timestamp'],
+            });
+          }
+        });
+      }
+    });
+
+    return result;
   }
 }

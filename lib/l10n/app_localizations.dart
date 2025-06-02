@@ -238,6 +238,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No favorite items'**
   String get noFavorites;
+
+  /// No description provided for @shopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get shopping;
+
+  /// No description provided for @comments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get comments;
+
+  /// No description provided for @writeAComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a comment'**
+  String get writeAComment;
+
+  /// No description provided for @post.
+  ///
+  /// In en, this message translates to:
+  /// **'Post'**
+  String get post;
+
+  /// No description provided for @pleaseLogInToFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Please log in to favorite items'**
+  String get pleaseLogInToFavorite;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

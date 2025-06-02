@@ -41,17 +41,13 @@ class FavoriteItem extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4),
-                  const Text("Men's Clothing", style: TextStyle(fontSize: 12)),
+                  Text(item.category ?? '', style: TextStyle(fontSize: 12)),
                 ],
               ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  '${item.price?.toStringAsFixed(2) ?? '0.00'}\$',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
                 IconButton(
                   icon: Icon(
                     item.isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -69,6 +65,10 @@ class FavoriteItem extends StatelessWidget {
                       onRemove();
                     }
                   },
+                ),
+                Text(
+                  '${item.price?.toStringAsFixed(2) ?? '0.00'}\$',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
             ),

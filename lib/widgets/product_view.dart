@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_final/screens/product_detail.dart';
+import 'package:mobile_final/l10n/app_localizations.dart';
 import '../models/product_model.dart';
 import '../provider/global_provider.dart';
 
@@ -9,7 +10,7 @@ class ProductViewShop extends StatelessWidget {
 
   const ProductViewShop(this.data, {super.key});
 
-  _onTap(BuildContext context) {
+  void _onTap(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => Product_detail(data)),
@@ -18,6 +19,8 @@ class ProductViewShop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+
     return Consumer<Global_provider>(
       builder: (context, provider, _) {
         final current = provider.products.firstWhere(
@@ -60,11 +63,7 @@ class ProductViewShop extends StatelessWidget {
                           );
                           if (!success) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  "Please log in to favorite items",
-                                ),
-                              ),
+                              SnackBar(content: Text(t.pleaseLogInToFavorite)),
                             );
                           }
                         },
@@ -86,7 +85,7 @@ class ProductViewShop extends StatelessWidget {
                       ),
                       const SizedBox(height: 2.0),
                       Text(
-                        '\$${current.price?.toStringAsFixed(2) ?? '0.00'}',
+                        '₹${current.price?.toStringAsFixed(2) ?? '0.00'}',
                         style: const TextStyle(
                           fontSize: 18.0,
                           color: Colors.green,

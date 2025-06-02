@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_final/services/auth.services.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile_final/provider/global_provider.dart';
 import 'package:mobile_final/screens/bags_page.dart';
@@ -11,9 +10,7 @@ import 'package:mobile_final/screens/login_page.dart';
 import 'package:mobile_final/l10n/app_localizations.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
-
-  final AuthService _authService = AuthService();
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +22,7 @@ class HomePage extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             final firebaseUser = snapshot.data;
-
-            if (firebaseUser != null && provider.currentUser == null) {
-              _authService.fetchUserProfile(firebaseUser.uid).then((profile) {
-                if (profile != null) {
-                  provider.setCurrentUser(profile);
-                }
-              });
-            }
-
             final isLoggedIn = firebaseUser != null;
-
             List<Widget> pages = [
               const ShopPage(),
               const BagsPage(),
@@ -54,7 +41,7 @@ class HomePage extends StatelessWidget {
                 items: [
                   BottomNavigationBarItem(
                     icon: const Icon(Icons.shop),
-                    label: 'Shopping', // Optional: localize if needed
+                    label: t.shopping,
                   ),
                   BottomNavigationBarItem(
                     icon: const Icon(Icons.shopping_basket),

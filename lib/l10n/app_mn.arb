@@ -23,5 +23,10 @@
   "productPrice": "Барааны үнэ",
   "totalCost": "Нийт төлбөр",
   "favorites": "Хадгалсан бараа",
-  "noFavorites": "Хадгалсан бараа алга байна"
+  "noFavorites": "Хадгалсан бараа алга байна",
+  "shopping": "Дэлгүүр",
+  "comments": "Сэтгэгдлүүд",
+  "writeAComment": "Сэтгэгдэл бичих",
+  "post": "Бичих",
+  "pleaseLogInToFavorite": "Та хадгалахын тулд нэвтэрнэ үү"
 }

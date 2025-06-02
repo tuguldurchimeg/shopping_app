@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_final/provider/global_provider.dart';
 import 'package:mobile_final/screens/register_page.dart';
 import 'package:mobile_final/services/auth.services.dart';
-import 'package:mobile_final/screens/home_page.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   final void Function(Locale)? onLocaleChange;
@@ -41,26 +38,11 @@ class _LoginScreenState extends State<LoginScreen> {
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-
+      if (!mounted) return;
       if (firebaseUser != null) {
-        final profile = await auth.fetchUserProfile(firebaseUser.uid);
-        if (profile != null) {
-          final provider = Provider.of<Global_provider>(context, listen: false);
-          provider.setCurrentUser(profile);
-
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Login successful')));
-
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => HomePage()),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('No user profile found')),
-          );
-        }
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Login successful')));
       } else {
         ScaffoldMessenger.of(
           context,
